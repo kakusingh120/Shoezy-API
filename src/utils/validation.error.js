@@ -1,25 +1,23 @@
-const  AppError  = require("./error.handler");
+const ApiError = require("./ApiError");
 const { StatusCodes } = require("http-status-codes");
 
-
-class ValidationError extends AppError {
-
+class ValidationError extends ApiError {
     constructor(error) {
-
-        let errorName = error.name || 'ValidationError';
+        let errorName = error.name || "ValidationError";
         let explanation = [];
 
-        error.errors.forEach((err) => {
-            explanation.push(err.message)
-        });
-
+        if (error.errors) {
+            error.errors.forEach((err) => {
+                explanation.push(err.message);
+            });
+        }
 
         super(
             errorName,
-            'Not able to validate the data sent in request',
+            "Not able to validate the data sent in request",
             explanation,
             StatusCodes.BAD_REQUEST
-        )
+        );
     }
 }
 
