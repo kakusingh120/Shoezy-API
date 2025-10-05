@@ -1,1 +1,8 @@
-node_modules/
+# Node modules folder
+/node_modules/
+
+# Environment variables file
+/.env
+
+# Config file inside src/config
+/src/config/config.json
