@@ -2,28 +2,34 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const { PORT } = require("./config/server.config");
+const apiRoutes = require("./routes/index");
+const errorHandler = require("./middleware/error.handler"); // <-- import
 
 const port = PORT || 8088;
 
 const setUpApplicationServer = async () => {
     try {
-        // middleware setup
+        // 🔹 Body parsing middlewares
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));
 
-        // app.use('/api');
-        app.get('/', (req, res) => {
-            res.send("hello shoesy");
-        })
+        // 🔹 Routes
+        app.use("/api", apiRoutes);
+
+        app.get("/", (req, res) => {
+            res.send("hello shoezy");
+        });
+
+        // 🔹 Error Handler Middleware (must be last)
+        app.use(errorHandler);
 
         app.listen(port, () => {
-            console.log(`Server is listening on port http://localhost:${port}`);
-        })
-
+            console.log(`✅ Server is listening on http://localhost:${port}`);
+        });
     } catch (error) {
-        console.log("Error during server starting", error);
-        throw error
+        console.log("❌ Error during server startup", error);
+        throw error;
     }
-}
+};
 
 setUpApplicationServer();
